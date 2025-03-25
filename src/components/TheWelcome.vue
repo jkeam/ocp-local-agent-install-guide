@@ -14,7 +14,9 @@ const {
   workers,
   clusterType,
   showVips,
-  workerCount
+  workerCount,
+  publicKey,
+  machineType
 } = storeToRefs(inputStore)
 
 function output() {
@@ -25,6 +27,18 @@ function output() {
 <template>
   <BAccordion>
     <BAccordionItem title="Cluster Basics" visible>
+      <BRow>
+        <BCol>
+          <label for="cluster-type">Install Machine O/S:</label>
+          <select id="cluster-type" v-model="machineType">
+            <option value="mac_64">MacOS x86_64</option>
+            <option value="mac_arm">MacOS aarch64</option>
+            <option value="linux_64">Linux x86_64</option>
+            <option value="rhel8_64">Linux RHEL 8 x86_64</option>
+            <option value="rhel9_64">Linux RHEL 9 x86_64</option>
+          </select>
+        </BCol>
+      </BRow>
       <BRow>
         <BCol>
           <label for="cluster-type">Name:</label>
@@ -47,8 +61,20 @@ function output() {
           <input id="pull-secret" type="text" v-model="pullSecret" />
         </BCol>
       </BRow>
+      <BRow>
+        <BCol>
+          <label for="pull-secret">Public SSH Key:</label>
+          <input id="pull-secret" type="text" v-model="publicKey" />
+        </BCol>
+      </BRow>
+      <BRow>
+        <BCol>
+          <label for="pull-secret">Host Network CIDR:</label>
+          <input id="pull-secret" type="text" v-model="machineCidr" />
+        </BCol>
+      </BRow>
     </BAccordionItem>
-    <BAccordionItem title="DNS" visible>
+    <BAccordionItem title="DNS">
       <BRow>
         <BCol>
           <label for="dns-zone">DNS Zone:</label>
@@ -69,14 +95,14 @@ function output() {
       </BRow>
     </BAccordionItem>
 
-    <BAccordionItem title="Master Machines" visible>
+    <BAccordionItem title="Master Machines">
       <BRow v-bind:key="index" v-for="(master, index) in masters">
         <BCol>
           <Machine m-type="Master" :m-number="(index + 1).toString()" v-model="masters[index]" /> 
         </BCol>
       </BRow>
     </BAccordionItem>
-    <BAccordionItem title="Worker Machines" visible>
+    <BAccordionItem title="Worker Machines">
       <BRow>
         <BCol>
           <label for="worker-count">Worker Count:</label>

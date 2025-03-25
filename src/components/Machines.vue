@@ -21,6 +21,7 @@ const model = defineModel<Machine>()
     <p>Hostname: <input type="text" required v-model="model.hostname"></p>
     <p>IP Address: <input type="text" required v-model="model.ipAddress"></p>
     <p>NIC Name: <input type="text" v-model="model.interfaceName"></p>
+    <p>MAC Address: <input type="text" v-model="model.macAddress"></p>
     <p>Install to Device: <input type="text" v-model="model.deviceHintName"></p>
     <p>DNS Server: <input type="text" v-model="model.dnsServer"></p>
     <p>Default Route: <input type="text" v-model="model.defaultRoute"></p>

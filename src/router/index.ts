@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import DnsView from '@/views/DnsView.vue'
 import AgentConfigsView from '@/views/AgentConfig.vue'
+import InstallConfigView from '@/views/InstallConfig.vue'
+import InstallGuideView from '@/views/InstallGuide.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,6 +22,16 @@ const router = createRouter({
       path: '/agentconfigs',
       name: 'agentconfigs',
       component: AgentConfigsView,
+    },
+    {
+      path: '/installconfig',
+      name: 'installconfig',
+      component: InstallConfigView,
+    },
+    {
+      path: '/installguide',
+      name: 'installguide',
+      component: InstallGuideView,
     },
     {
       path: '/about',

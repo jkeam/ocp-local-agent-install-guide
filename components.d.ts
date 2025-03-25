@@ -20,6 +20,8 @@ declare module 'vue' {
     IconEcosystem: typeof import('./src/components/icons/IconEcosystem.vue')['default']
     IconSupport: typeof import('./src/components/icons/IconSupport.vue')['default']
     IconTooling: typeof import('./src/components/icons/IconTooling.vue')['default']
+    InstallConfig: typeof import('./src/components/InstallConfig.vue')['default']
+    InstallGuide: typeof import('./src/components/InstallGuide.vue')['default']
     Machines: typeof import('./src/components/Machines.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

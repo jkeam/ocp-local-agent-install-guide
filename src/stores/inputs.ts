@@ -8,7 +8,16 @@ export interface Machine {
   deviceHintName: string,
   ipAddress: string,
   dnsServer: string,
-  defaultRoute: string
+  defaultRoute: string,
+}
+
+interface IDownloadUrl {
+  oc: string,
+  installer: string
+}
+
+interface IOptions {
+  [propName: string]: IDownloadUrl
 }
 
 export const useInputStore = defineStore('inputs', () => {
@@ -20,6 +29,10 @@ export const useInputStore = defineStore('inputs', () => {
   const clusterType = ref("standard");
   const showVips = ref(true);
   const workerCount = ref(2);
+  const publicKey = ref("");
+  const machineType = ref("mac_64");
+  const downloadUrls = ref<IDownloadUrl>({oc:"",installer: ""});
+  const machineCidr = ref("192.168.6.0/24")
 
   const workers = ref<Machine[]>([
     {
@@ -71,6 +84,33 @@ export const useInputStore = defineStore('inputs', () => {
       defaultRoute: '192.168.100.1'
     }
   ])
+
+  watch(machineType, (newM, oldM) => {
+    const staticUrls : IOptions = {
+      mac_64: {
+        oc: "https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/openshift-client-mac.tar.gz",
+        installer: "https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/openshift-install-mac.tar.gz"
+      },
+      mac_arm: {
+        oc: "https://mirror.openshift.com/pub/openshift-v4/aarch64/clients/ocp/stable/openshift-client-mac-arm64.tar.gz",
+        installer: "https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/openshift-install-mac-arm64.tar.gz"
+      },
+      linux_64: {
+        oc: "https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/openshift-client-linux.tar.gz",
+        installer: "https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/openshift-install-linux.tar.gz"
+      },
+      rhel8_64: {
+        oc: "https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/openshift-client-linux-amd64-rhel8.tar.gz",
+        installer: "https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/openshift-install-linux.tar.gz"
+      },
+      rhel9_64: {
+        oc: "https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/openshift-client-linux-amd64-rhel9.tar.gz",
+        installer: "https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/openshift-install-linux.tar.gz"
+      },
+    }
+
+    downloadUrls.value = staticUrls[newM];
+  })
   
   watch(workerCount, (newCount, oldCount) => {
     const newWorkers = []
@@ -151,6 +191,10 @@ export const useInputStore = defineStore('inputs', () => {
     clusterType,
     showVips,
     workers,
-    workerCount
+    workerCount,
+    publicKey,
+    machineType,
+    downloadUrls,
+    machineCidr
   }
 })

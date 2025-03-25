@@ -14,6 +14,8 @@ import HelloWorld from './components/HelloWorld.vue'
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/dns">DNS</RouterLink>
         <RouterLink to="/agentconfigs">AgentConfigs</RouterLink>
+        <RouterLink to="/installconfig">Install Config</RouterLink>
+        <RouterLink to="/installguide">Install Guide</RouterLink>
       </nav>
     </div>
   </header>
