@@ -13,7 +13,9 @@ export interface Machine {
 
 interface IDownloadUrl {
   oc: string,
-  installer: string
+  ocFilename?: string,
+  installer: string,
+  installerFilename?: string
 }
 
 interface IOptions {
@@ -31,8 +33,18 @@ export const useInputStore = defineStore('inputs', () => {
   const workerCount = ref(2);
   const publicKey = ref("");
   const machineType = ref("mac_64");
-  const downloadUrls = ref<IDownloadUrl>({oc:"",installer: ""});
+  const downloadUrls = ref<IDownloadUrl>({
+    oc:"",
+    ocFilename: "",
+    installer: "",
+    installerFilename: ""
+  });
   const machineCidr = ref("192.168.6.0/24")
+  const disconnected = ref(true);
+  const mirrorHostName = ref("");
+  const mirrorHostUsername = ref("");
+
+  const regex : RegExp = /(?:.*:\/\/)(?:.*\/)(.*)/gm;
 
   const workers = ref<Machine[]>([
     {
@@ -110,6 +122,12 @@ export const useInputStore = defineStore('inputs', () => {
     }
 
     downloadUrls.value = staticUrls[newM];
+    
+    const [[, ocFilename]] = downloadUrls.value.oc.matchAll(regex);
+    const [[, installerFilename]] = downloadUrls.value.installer.matchAll(regex);
+
+    downloadUrls.value.ocFilename = ocFilename;
+    downloadUrls.value.installerFilename = installerFilename;
   })
   
   watch(workerCount, (newCount, oldCount) => {
@@ -195,6 +213,9 @@ export const useInputStore = defineStore('inputs', () => {
     publicKey,
     machineType,
     downloadUrls,
-    machineCidr
+    machineCidr,
+    disconnected,
+    mirrorHostName,
+    mirrorHostUsername
   }
 })

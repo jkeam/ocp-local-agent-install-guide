@@ -3,19 +3,18 @@ import { storeToRefs } from 'pinia'
 import { useInputStore } from '../stores/inputs.js'
 import AgentConfigs from '@/components/AgentConfigs.vue';
 import InstallConfig from '@/components/InstallConfig.vue';
+import DisconnectedSteps from '@/components/DisconnectedSteps.vue';
 
 const inputStore = useInputStore();
-const { clusterName, dnsZone, pullSecret, publicKey, masters, workers, downloadUrls } = storeToRefs(inputStore);
+const { clusterName, dnsZone, pullSecret, publicKey, masters, workers, downloadUrls, disconnected } = storeToRefs(inputStore);
 
-const regex : RegExp = /(?:.*:\/\/)(?:.*\/)(.*)/gm;
-const [[, ocFilename]] = downloadUrls.value.oc.matchAll(regex);
-const [[, installerFilename]] = downloadUrls.value.installer.matchAll(regex);
 
 </script>
 
 <template>
   <div class="scrollable">
     <ol>
+       <DisconnectedSteps v-if="disconnected" />
         <li>
           Download the oc cli tool <br/>
           <code>curl -LO {{ downloadUrls.oc }}</code>
@@ -27,10 +26,10 @@ const [[, installerFilename]] = downloadUrls.value.installer.matchAll(regex);
         <li>
           Extract the downloads <br/>
           <code>
-            tar -xvzf {{ ocFilename }}
+            tar -xvzf {{ downloadUrls.ocFilename }}
           </code><br/>
           <code>
-            tar -xvzf {{ installerFilename }}
+            tar -xvzf {{ downloadUrls.installerFilename }}
           </code>
         </li>
         <li>

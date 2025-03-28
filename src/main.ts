@@ -6,16 +6,17 @@ import 'bootstrap-vue-next/dist/bootstrap-vue-next.css'
 import { createApp } from 'vue'
 import {createBootstrap} from 'bootstrap-vue-next'
 import { createPinia } from 'pinia'
+import { createVCodeBlock } from '@wdns/vue-code-block';
 
 import App from './App.vue'
 import router from './router'
 
 const app = createApp(App)
 
+
 app.use(createPinia())
 app.use(router)
-
-
+app.use(createVCodeBlock({}));
 app.use(createBootstrap()) // Important
 
 app.mount('#app')

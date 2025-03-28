@@ -13,6 +13,7 @@ declare module 'vue' {
     BAccordionItem: typeof import('bootstrap-vue-next/components/BAccordion')['BAccordionItem']
     BCol: typeof import('bootstrap-vue-next/components/BContainer')['BCol']
     BRow: typeof import('bootstrap-vue-next/components/BContainer')['BRow']
+    DisconnectedSteps: typeof import('./src/components/DisconnectedSteps.vue')['default']
     DnsEntries: typeof import('./src/components/DnsEntries.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']

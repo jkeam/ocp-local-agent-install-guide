@@ -16,7 +16,11 @@ const {
   showVips,
   workerCount,
   publicKey,
-  machineType
+  machineType,
+  machineCidr,
+  disconnected,
+  mirrorHostName,
+  mirrorHostUsername,
 } = storeToRefs(inputStore)
 
 function output() {
@@ -36,6 +40,15 @@ function output() {
             <option value="linux_64">Linux x86_64</option>
             <option value="rhel8_64">Linux RHEL 8 x86_64</option>
             <option value="rhel9_64">Linux RHEL 9 x86_64</option>
+          </select>
+        </BCol>
+      </BRow>
+      <BRow>
+        <BCol>
+          <label for="cluster-type">Internet Access:</label>
+          <select id="cluster-type" v-model="disconnected">
+            <option value="false">Yes</option>
+            <option value="true">No</option>
           </select>
         </BCol>
       </BRow>
@@ -74,6 +87,20 @@ function output() {
         </BCol>
       </BRow>
     </BAccordionItem>
+    <BAccordionItem title="Disconnected Details" v-if="disconnected">
+      <BRow>
+        <BCol>
+          <label for="pull-secret">Hostname for mirror registry:</label>
+          <input id="pull-secret" type="text" v-model="mirrorHostName" />
+        </BCol>
+      </BRow>
+      <BRow>
+        <BCol>
+          <label for="pull-secret">Mirror Host Username for SSH/Ansible:</label>
+          <input id="pull-secret" type="text" v-model="mirrorHostUsername" />
+        </BCol>
+      </BRow>
+    </BAccordionItem>
     <BAccordionItem title="DNS">
       <BRow>
         <BCol>
@@ -98,7 +125,7 @@ function output() {
     <BAccordionItem title="Master Machines">
       <BRow v-bind:key="index" v-for="(master, index) in masters">
         <BCol>
-          <Machine m-type="Master" :m-number="(index + 1).toString()" v-model="masters[index]" /> 
+          <Machine m-type="Master" :m-number="(index + 1).toString()" v-model="masters[index]" />
         </BCol>
       </BRow>
     </BAccordionItem>
@@ -111,7 +138,7 @@ function output() {
       </BRow>
       <BRow v-bind:key="index" v-for="(worker, index) in workers">
         <BCol>
-          <Machine m-type="Worker" :m-number="(index + 1).toString()" v-model="workers[index]" /> 
+          <Machine m-type="Worker" :m-number="(index + 1).toString()" v-model="workers[index]" />
         </BCol>
       </BRow>
     </BAccordionItem>
