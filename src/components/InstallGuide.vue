@@ -12,11 +12,7 @@ const cliDownload = `curl -LO ${downloadUrls.value.oc}`;
 const installerDownload = `curl -LO ${downloadUrls.value.installer}`;
 const extractDownloads = `tar -xvzf ${downloadUrls.value.ocFilename }
 tar -xvzf ${downloadUrls.value.installerFilename}`;
-const createImage=
-`${distType.value === 'okd' ? "export OPENSHIFT_INSTALL_OS_IMAGE_OVERRIDE=https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.18/latest/rhcos-4.18.1-x86_64-live.x86_64.iso" : ""} 
-./openshift-install agent create image
-${distType.value === 'okd' ? `ssh core@${masters.value[0].ipAddress} < fix-postgres.sh` : ""}
-`
+const createImage=`./openshift-install agent create image`
 const fixpostgres=
 `#!/bin/bash
 sudo su -
@@ -64,19 +60,6 @@ systemctl daemon-reload && systemctl restart assisted-service-db
         <li>
           Save the file
           <InstallConfig />
-        </li>
-        <li v-if="distType=='okd'">
-          Create the file<br/>
-          <VCodeBlock
-                :code="fixpostgres"
-                highlightjs
-                lang="bash"
-                label="fix-postgres.sh"
-                theme="neon-bunny"
-            />
-          <code>
-            
-          </code>
         </li>
         <li>
           Create the agent iso for installation<br/>

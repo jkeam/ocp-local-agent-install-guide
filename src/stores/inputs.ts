@@ -123,24 +123,24 @@ export const useInputStore = defineStore('inputs', () => {
     }
     const staticOKDUrls : IOptions = {
       mac_64: {
-        oc: "https://github.com/okd-project/okd-scos/releases/latest/download/openshift-client-mac-4.18.0-okd-scos.6.tar.gz",
-        installer: "https://github.com/okd-project/okd-scos/releases/latest/download/openshift-install-mac-4.18.0-okd-scos.6.tar.gz"
+        oc: "https://github.com/okd-project/okd-scos/releases/download/4.19.0-okd-scos.ec.6/openshift-client-mac-4.19.0-okd-scos.ec.6.tar.gz",
+        installer: "https://github.com/okd-project/okd-scos/releases/download/4.19.0-okd-scos.ec.6/openshift-install-mac-4.19.0-okd-scos.ec.6.tar.gz"
       },
       mac_arm: {
-        oc: "https://github.com/okd-project/okd-scos/releases/download/4.18.0-okd-scos.6/openshift-client-mac-arm64-4.18.0-okd-scos.6.tar.gz",
-        installer: "https://github.com/okd-project/okd-scos/releases/download/4.18.0-okd-scos.6/openshift-install-mac-arm64-4.18.0-okd-scos.6.tar.gz"
+        oc: "https://github.com/okd-project/okd-scos/releases/download/4.19.0-okd-scos.ec.6/openshift-client-mac-arm64-4.19.0-okd-scos.ec.6.tar.gz",
+        installer: "https://github.com/okd-project/okd-scos/releases/download/4.19.0-okd-scos.ec.6/openshift-install-mac-arm64-4.19.0-okd-scos.ec.6.tar.gz"
       },
       linux_64: {
-        oc: "https://github.com/okd-project/okd-scos/releases/download/4.18.0-okd-scos.6/openshift-client-linux-4.18.0-okd-scos.6.tar.gz",
-        installer: "https://github.com/okd-project/okd-scos/releases/download/4.18.0-okd-scos.6/openshift-install-linux-4.18.0-okd-scos.6.tar.gz"
+        oc: "https://github.com/okd-project/okd-scos/releases/download/4.19.0-okd-scos.ec.6/openshift-client-linux-4.19.0-okd-scos.ec.6.tar.gz",
+        installer: "https://github.com/okd-project/okd-scos/releases/download/4.19.0-okd-scos.ec.6/openshift-install-linux-4.19.0-okd-scos.ec.6.tar.gz"
       },
       rhel8_64: {
-        oc: "https://github.com/okd-project/okd-scos/releases/download/4.18.0-okd-scos.6/ccoctl-linux-rhel8-4.18.0-okd-scos.6.tar.gz",
-        installer: "https://github.com/okd-project/okd-scos/releases/download/4.18.0-okd-scos.6/openshift-install-linux-4.18.0-okd-scos.6.tar.gz"
+        oc: "https://github.com/okd-project/okd-scos/releases/download/4.19.0-okd-scos.ec.6/openshift-client-linux-amd64-rhel8-4.19.0-okd-scos.ec.6.tar.gz",
+        installer: "https://github.com/okd-project/okd-scos/releases/download/4.19.0-okd-scos.ec.6/openshift-install-linux-4.19.0-okd-scos.ec.6.tar.gz"
       },
       rhel9_64: {
-        oc: "https://github.com/okd-project/okd-scos/releases/download/4.18.0-okd-scos.6/ccoctl-linux-rhel9-4.18.0-okd-scos.6.tar.gz",
-        installer: "https://github.com/okd-project/okd-scos/releases/download/4.18.0-okd-scos.6/openshift-install-linux-4.18.0-okd-scos.6.tar.gz"
+        oc: "https://github.com/okd-project/okd-scos/releases/download/4.19.0-okd-scos.ec.6/openshift-client-linux-amd64-rhel9-4.19.0-okd-scos.ec.6.tar.gz",
+        installer: "https://github.com/okd-project/okd-scos/releases/download/4.19.0-okd-scos.ec.6/openshift-install-linux-4.19.0-okd-scos.ec.6.tar.gz"
       },
     }
     

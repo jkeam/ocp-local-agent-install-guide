@@ -1,0 +1,4 @@
+contrib/containers
+.vscode
+dist
+node_modules

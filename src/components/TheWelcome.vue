@@ -24,9 +24,6 @@ const {
   distType
 } = storeToRefs(inputStore)
 
-function output() {
-  console.log(masters.value)
-}
 </script>
 
 <template>
