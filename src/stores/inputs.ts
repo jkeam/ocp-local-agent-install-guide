@@ -40,9 +40,10 @@ export const useInputStore = defineStore('inputs', () => {
     installerFilename: ""
   });
   const machineCidr = ref("192.168.6.0/24")
-  const disconnected = ref(true);
+  const disconnected = ref(false);
   const mirrorHostName = ref("");
   const mirrorHostUsername = ref("");
+  const distType = ref("ocp");
 
   const regex : RegExp = /(?:.*:\/\/)(?:.*\/)(.*)/gm;
 
@@ -97,8 +98,8 @@ export const useInputStore = defineStore('inputs', () => {
     }
   ])
 
-  watch(machineType, (newM, oldM) => {
-    const staticUrls : IOptions = {
+  function setDownloadUrl(newM: string) {
+    const staticOCPUrls : IOptions = {
       mac_64: {
         oc: "https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/openshift-client-mac.tar.gz",
         installer: "https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/openshift-install-mac.tar.gz"
@@ -120,14 +121,52 @@ export const useInputStore = defineStore('inputs', () => {
         installer: "https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/openshift-install-linux.tar.gz"
       },
     }
-
-    downloadUrls.value = staticUrls[newM];
+    const staticOKDUrls : IOptions = {
+      mac_64: {
+        oc: "https://github.com/okd-project/okd-scos/releases/latest/download/openshift-client-mac-4.18.0-okd-scos.6.tar.gz",
+        installer: "https://github.com/okd-project/okd-scos/releases/latest/download/openshift-install-mac-4.18.0-okd-scos.6.tar.gz"
+      },
+      mac_arm: {
+        oc: "https://github.com/okd-project/okd-scos/releases/download/4.18.0-okd-scos.6/openshift-client-mac-arm64-4.18.0-okd-scos.6.tar.gz",
+        installer: "https://github.com/okd-project/okd-scos/releases/download/4.18.0-okd-scos.6/openshift-install-mac-arm64-4.18.0-okd-scos.6.tar.gz"
+      },
+      linux_64: {
+        oc: "https://github.com/okd-project/okd-scos/releases/download/4.18.0-okd-scos.6/openshift-client-linux-4.18.0-okd-scos.6.tar.gz",
+        installer: "https://github.com/okd-project/okd-scos/releases/download/4.18.0-okd-scos.6/openshift-install-linux-4.18.0-okd-scos.6.tar.gz"
+      },
+      rhel8_64: {
+        oc: "https://github.com/okd-project/okd-scos/releases/download/4.18.0-okd-scos.6/ccoctl-linux-rhel8-4.18.0-okd-scos.6.tar.gz",
+        installer: "https://github.com/okd-project/okd-scos/releases/download/4.18.0-okd-scos.6/openshift-install-linux-4.18.0-okd-scos.6.tar.gz"
+      },
+      rhel9_64: {
+        oc: "https://github.com/okd-project/okd-scos/releases/download/4.18.0-okd-scos.6/ccoctl-linux-rhel9-4.18.0-okd-scos.6.tar.gz",
+        installer: "https://github.com/okd-project/okd-scos/releases/download/4.18.0-okd-scos.6/openshift-install-linux-4.18.0-okd-scos.6.tar.gz"
+      },
+    }
+    
+    switch(distType.value) {
+      case "ocp":
+        downloadUrls.value = staticOCPUrls[newM];
+        break;
+      case "okd":
+        downloadUrls.value = staticOKDUrls[newM];
+        break;
+    }
+    
     
     const [[, ocFilename]] = downloadUrls.value.oc.matchAll(regex);
     const [[, installerFilename]] = downloadUrls.value.installer.matchAll(regex);
 
     downloadUrls.value.ocFilename = ocFilename;
     downloadUrls.value.installerFilename = installerFilename;
+  }
+
+  watch(machineType, (newM, oldM) => {
+    setDownloadUrl(newM);
+  })
+
+  watch(distType, (n, o) => {
+    setDownloadUrl(machineType.value);
   })
   
   watch(workerCount, (newCount, oldCount) => {
@@ -199,6 +238,8 @@ export const useInputStore = defineStore('inputs', () => {
     }
   });
 
+  setDownloadUrl(machineType.value);
+
   return { 
     dnsZone,
     clusterName,
@@ -216,6 +257,7 @@ export const useInputStore = defineStore('inputs', () => {
     machineCidr,
     disconnected,
     mirrorHostName,
-    mirrorHostUsername
+    mirrorHostUsername,
+    distType
   }
 })

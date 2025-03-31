@@ -6,8 +6,23 @@ import InstallConfig from '@/components/InstallConfig.vue';
 import DisconnectedSteps from '@/components/DisconnectedSteps.vue';
 
 const inputStore = useInputStore();
-const { clusterName, dnsZone, pullSecret, publicKey, masters, workers, downloadUrls, disconnected } = storeToRefs(inputStore);
+const { clusterName, dnsZone, pullSecret, publicKey, masters, workers, downloadUrls, disconnected, distType } = storeToRefs(inputStore);
 
+const cliDownload = `curl -LO ${downloadUrls.value.oc}`;
+const installerDownload = `curl -LO ${downloadUrls.value.installer}`;
+const extractDownloads = `tar -xvzf ${downloadUrls.value.ocFilename }
+tar -xvzf ${downloadUrls.value.installerFilename}`;
+const createImage=
+`${distType.value === 'okd' ? "export OPENSHIFT_INSTALL_OS_IMAGE_OVERRIDE=https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.18/latest/rhcos-4.18.1-x86_64-live.x86_64.iso" : ""} 
+./openshift-install agent create image
+${distType.value === 'okd' ? `ssh core@${masters.value[0].ipAddress} < fix-postgres.sh` : ""}
+`
+const fixpostgres=
+`#!/bin/bash
+sudo su -
+sed -i "s#ExecStart=.*#ExecStart=/usr/bin/podman run --net host --user=postgres --cidfile=%t/%n.ctr-id --cgroups=no-conmon --log-driver=journald --rm --pod-id-file=%t/assisted-service-pod.pod-id --sdnotify=conmon --replace -d --name=assisted-db --env-file=/usr/local/share/assisted-service/assisted-db.env \\$SERVICE_IMAGE /bin/bash -c '/usr/bin/pg_ctl -D /tmp/postgres/data/ -l /tmp/postgres/logfile start -w -o \\"-k /tmp\\"; createuser -s admin -h localhost; createdb installer -h localhost; /usr/bin/pg_ctl -D /tmp/postgres/data/ -l /tmp/postgres/logfile stop -w -o \\"-k /tmp\\"; exec postgres -D /tmp/postgres/data/ -k /tmp'#g" /etc/systemd/system/assisted-service-db.service
+systemctl daemon-reload && systemctl restart assisted-service-db
+`
 
 </script>
 
@@ -17,33 +32,62 @@ const { clusterName, dnsZone, pullSecret, publicKey, masters, workers, downloadU
        <DisconnectedSteps v-if="disconnected" />
         <li>
           Download the oc cli tool <br/>
-          <code>curl -LO {{ downloadUrls.oc }}</code>
+          <VCodeBlock
+                :code="cliDownload"
+                highlightjs
+                lang="bash"
+                theme="neon-bunny"
+            />
         </li>
         <li>
           Download the openshift installer <br/>
-          <code> curl -LO {{ downloadUrls.installer }}</code>
+          <VCodeBlock
+                :code="installerDownload"
+                highlightjs
+                lang="bash"
+                theme="neon-bunny"
+            />
         </li>
         <li>
           Extract the downloads <br/>
-          <code>
-            tar -xvzf {{ downloadUrls.ocFilename }}
-          </code><br/>
-          <code>
-            tar -xvzf {{ downloadUrls.installerFilename }}
-          </code>
+          <VCodeBlock
+                :code="extractDownloads"
+                highlightjs
+                lang="bash"
+                theme="neon-bunny"
+            />
         </li>
         <li>
-          Save the file contents below as agent-config.yaml
+          Save the file
           <AgentConfigs />
         </li>
         <li>
-          Save the file contents below as install-config.yaml
+          Save the file
           <InstallConfig />
+        </li>
+        <li v-if="distType=='okd'">
+          Create the file<br/>
+          <VCodeBlock
+                :code="fixpostgres"
+                highlightjs
+                lang="bash"
+                label="fix-postgres.sh"
+                theme="neon-bunny"
+            />
+          <code>
+            
+          </code>
         </li>
         <li>
           Create the agent iso for installation<br/>
+          <VCodeBlock
+                :code="createImage"
+                highlightjs
+                lang="bash"
+                theme="neon-bunny"
+            />
           <code>
-            ./openshift-install agent create image
+            
           </code>
         </li>
     </ol>

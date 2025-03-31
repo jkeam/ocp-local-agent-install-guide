@@ -21,6 +21,7 @@ const {
   disconnected,
   mirrorHostName,
   mirrorHostUsername,
+  distType
 } = storeToRefs(inputStore)
 
 function output() {
@@ -31,6 +32,15 @@ function output() {
 <template>
   <BAccordion>
     <BAccordionItem title="Cluster Basics" visible>
+      <BRow>
+        <BCol>
+          <label for="cluster-type">Distribution Type:</label>
+          <select id="cluster-type" v-model="distType">
+            <option value="ocp">OpenShift</option>
+            <option value="okd">OKD</option>
+          </select>
+        </BCol>
+      </BRow>
       <BRow>
         <BCol>
           <label for="cluster-type">Install Machine O/S:</label>
