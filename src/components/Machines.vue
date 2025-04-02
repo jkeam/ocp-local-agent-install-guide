@@ -12,7 +12,7 @@ const props = defineProps({
 })
 
 
-const model = defineModel<Machine>()
+const model = defineModel<Machine>({ required: true })
 
 </script>
 

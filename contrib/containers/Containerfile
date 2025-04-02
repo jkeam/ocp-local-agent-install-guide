@@ -2,4 +2,4 @@ FROM registry.access.redhat.com/ubi9/nodejs-20:latest
 
 COPY . .
 
-RUN npm run build
+RUN npm install && npm run build
