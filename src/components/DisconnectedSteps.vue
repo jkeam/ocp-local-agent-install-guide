@@ -16,6 +16,9 @@ const { inventoryContents, imageSetConfig } = storeToRefs(disconnectedStore);
 
 <template>
     <div>
+        Run the following commands on a machine that has internet access.
+    </div>
+    <ol>
         <li>
             Create the ansible inventory file<br/>
             <VCodeBlock
@@ -47,12 +50,27 @@ const { inventoryContents, imageSetConfig } = storeToRefs(disconnectedStore);
         <li>
             Build the container bundler<br/>
             <VCodeBlock
-                code="podman build -t ocp-mirror -v pullsecret.json:/root/.docker/config.json:Z -v imagesetconfig.yaml:/home/cmirror/imagesetconfig.yaml:Z ."
+                code="podman build -t ocp-mirror -v $(pwd)/pullsecret.json:/root/.docker/config.json:Z -v $(pwd)/imagesetconfig.yaml:/home/cmirror/imagesetconfig.yaml:Z ."
                 highlightjs
                 theme="neon-bunny"
                 lang="bash"
             />
         </li>
+        <li>
+            Export the tar image to run in the restricted network<br/>
+            <VCodeBlock
+                code="podman save -o ocpmirror.tar ocp-mirror:latest"
+                highlightjs
+                theme="neon-bunny"
+                lang="bash"
+            />
+        </li>
+        <li>
+            Copy the tar file to a machine that has access to the specified mirror hostname
+        </li>
+    </ol>
+    <div>
+        Complete the remaining steps on the host you copied the tar file to in the previous step
     </div>
 </template>
 

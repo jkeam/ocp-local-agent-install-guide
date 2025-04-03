@@ -190,15 +190,28 @@ export const useInputStore = defineStore('inputs', () => {
       i++;
     }
 
-    console.log(newWorkers);
-
     workers.value = newWorkers;
   })
 
-  watch(clusterType, (newType, oldType) => {
+  // update vips
+  watch([clusterType, masters], ([oldType, oldMachines], [newType, newMachines]) => {
     showVips.value = newType == "standard" || newType == "compact";
 
     if(!showVips.value) {
+      apiVip.value = masters.value[0].ipAddress
+      ingressVip.value = masters.value[0].ipAddress
+    }
+
+    if(oldType === "sno" && newType !== oldType) {
+      apiVip.value = ""
+      ingressVip.value = ""
+    }
+  }, {deep: true})
+
+  watch(clusterType, (newType, oldType) => {
+    const localShowVips = newType == "standard" || newType == "compact";
+
+    if(!localShowVips) {
       masters.value = [masters.value[0]]
       workers.value = []
       apiVip.value = masters.value[0].ipAddress
@@ -229,11 +242,6 @@ export const useInputStore = defineStore('inputs', () => {
             defaultRoute: ''
           }
         ]
-      }
-
-      if(oldType === "sno") {
-        apiVip.value = ""
-        ingressVip.value = ""
       }
     }
   });

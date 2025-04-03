@@ -115,13 +115,13 @@ const {
           <input id="dns-zone" type="text" required v-model="dnsZone" />
         </BCol>
       </BRow>
-      <BRow>
+      <BRow v-if="showVips">
         <BCol>
           <label for="api-vip">API VIP:</label>
           <input id="api-vip" type="text" v-model="apiVip" />
         </BCol>
       </BRow>
-      <BRow>
+      <BRow v-if="showVips">
         <BCol>
           <label for="ingress-vip">Ingress VIP:</label>
           <input id="ingress-vip" type="text" v-model="ingressVip" />

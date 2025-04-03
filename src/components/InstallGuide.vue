@@ -24,9 +24,9 @@ systemctl daemon-reload && systemctl restart assisted-service-db
 
 <template>
   <div class="scrollable">
+    <DisconnectedSteps v-if="disconnected" />
     <ol>
-       <DisconnectedSteps v-if="disconnected" />
-        <li>
+        <li v-if="!disconnected" >
           Download the oc cli tool <br/>
           <VCodeBlock
                 :code="cliDownload"
@@ -35,7 +35,7 @@ systemctl daemon-reload && systemctl restart assisted-service-db
                 theme="neon-bunny"
             />
         </li>
-        <li>
+        <li v-if="!disconnected" >
           Download the openshift installer <br/>
           <VCodeBlock
                 :code="installerDownload"
@@ -44,7 +44,7 @@ systemctl daemon-reload && systemctl restart assisted-service-db
                 theme="neon-bunny"
             />
         </li>
-        <li>
+        <li v-if="!disconnected" >
           Extract the downloads <br/>
           <VCodeBlock
                 :code="extractDownloads"
@@ -61,7 +61,7 @@ systemctl daemon-reload && systemctl restart assisted-service-db
           Save the file
           <InstallConfig />
         </li>
-        <li>
+        <li v-if="!disconnected" >
           Create the agent iso for installation<br/>
           <VCodeBlock
                 :code="createImage"
@@ -69,9 +69,33 @@ systemctl daemon-reload && systemctl restart assisted-service-db
                 lang="bash"
                 theme="neon-bunny"
             />
-          <code>
-            
-          </code>
+        </li>
+        <li v-if="disconnected" >
+          Import the tar image<br/>
+          <VCodeBlock
+                code="podman import $(pwd)/ocpmirror.tar"
+                highlightjs
+                lang="bash"
+                theme="neon-bunny"
+            />
+        </li>
+        <li v-if="disconnected" >
+          Install the mirror-registry and import images<br/>
+          <VCodeBlock
+                code="podman run --rm -v $(pwd)/install-config.yaml:/home/cmirror/install-config.yaml:Z $(pwd)/agent-config.yaml:/home/cmirror/agent-config.yaml:Z ocp-mirror:latest"
+                highlightjs
+                lang="bash"
+                theme="neon-bunny"
+            />
+        </li>
+        <li v-if="disconnected" >
+          Create the agent iso for installation<br/>
+          <VCodeBlock
+                code="podman run --rm -v $(pwd)/install-config.yaml:/home/cmirror/install-config.yaml:Z $(pwd)/agent-config.yaml:/home/cmirror/agent-config.yaml:Z ocp-mirror:latest - oc agent create image"
+                highlightjs
+                lang="bash"
+                theme="neon-bunny"
+            />
         </li>
     </ol>
   </div>
