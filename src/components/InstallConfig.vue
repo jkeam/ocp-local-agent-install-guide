@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia'
 import { useInputStore } from '../stores/inputs.js'
 
 const inputStore = useInputStore();
-const { clusterName, dnsZone, pullSecret, publicKey, masters, workers, machineCidr } = storeToRefs(inputStore);
+const { clusterName, dnsZone, pullSecret, publicKey, masters, workers, machineCidr, disconnected, mirrorHostName } = storeToRefs(inputStore);
 
 const installConfig =
 `apiVersion: v1
@@ -30,7 +30,14 @@ networking:
 platform:
   none: {} 
 fips: false 
-pullSecret: '${pullSecret.value}' 
+pullSecret: '${ disconnected ? `{"auths":{"${mirrorHostName.value}:8443":{"auth":"${btoa("init:SuperSecret")}"}}}` : pullSecret.value}'
+${disconnected ? `imageContentSources:
+  - mirrors:
+    - ${mirrorHostName.value}:8443/openshift/release
+    source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
+  - mirrors:
+    - ${mirrorHostName.value}:8443/openshift/release-images
+    source: quay.io/openshift-release-dev/ocp-release` : ''}
 sshKey: '${publicKey.value}'`
 
 </script>

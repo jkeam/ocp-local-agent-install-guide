@@ -24,6 +24,7 @@ systemctl daemon-reload && systemctl restart assisted-service-db
 
 <template>
   <div class="scrollable">
+    NOTE: DO NOT run any of the commands in this guide as root!<br/>
     <DisconnectedSteps v-if="disconnected" />
     <ol>
         <li v-if="!disconnected" >
@@ -73,7 +74,7 @@ systemctl daemon-reload && systemctl restart assisted-service-db
         <li v-if="disconnected" >
           Import the tar image<br/>
           <VCodeBlock
-                code="podman import $(pwd)/ocpmirror.tar"
+                code="podman load -i $(pwd)/ocpmirror.tar"
                 highlightjs
                 lang="bash"
                 theme="neon-bunny"
@@ -82,7 +83,8 @@ systemctl daemon-reload && systemctl restart assisted-service-db
         <li v-if="disconnected" >
           Install the mirror-registry and import images<br/>
           <VCodeBlock
-                code="podman run --rm -v $(pwd)/install-config.yaml:/home/cmirror/install-config.yaml:Z $(pwd)/agent-config.yaml:/home/cmirror/agent-config.yaml:Z ocp-mirror:latest"
+                code="mkdir $(pwd)/cluster-resources
+podman run --rm -v $(pwd)/cluster-resources:/home/cmirror/oc-mirrors/working-dir:Z -v $HOME/.ssh/known_hosts:/root/.ssh/known_hosts:Z -v $HOME/.ssh/id_rsa:/root/.ssh/id_rsa:Z -v $(pwd)/inventory:/home/cmirror/inventory:Z -v $HOME/.ssh/known_hosts:/home/cmirror/.ssh/known_hosts:Z ocp-mirror:latest"
                 highlightjs
                 lang="bash"
                 theme="neon-bunny"
@@ -91,7 +93,8 @@ systemctl daemon-reload && systemctl restart assisted-service-db
         <li v-if="disconnected" >
           Create the agent iso for installation<br/>
           <VCodeBlock
-                code="podman run --rm -v $(pwd)/install-config.yaml:/home/cmirror/install-config.yaml:Z $(pwd)/agent-config.yaml:/home/cmirror/agent-config.yaml:Z ocp-mirror:latest - oc agent create image"
+                code="podman run --name agent-iso -v $(pwd)/cluster-resources:/home/cmirror/oc-mirrors/working-dir:Z -v $(pwd)/inventory:/home/cmirror/inventory:Z -v $HOME/.ssh/known_hosts:/root/.ssh/known_hosts:Z -v $HOME/.ssh/id_rsa:/root/.ssh/id_rsa:Z -v $(pwd)/install-config.yaml:/home/cmirror/install-config.yaml:Z -v $(pwd)/agent-config.yaml:/home/cmirror/agent-config.yaml:Z ocp-mirror:latest - oc agent create image
+podman cp agent-iso:/home/cmirror/cluster-config/agent.x86_64.iso ./"
                 highlightjs
                 lang="bash"
                 theme="neon-bunny"
