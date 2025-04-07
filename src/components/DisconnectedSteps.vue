@@ -18,7 +18,7 @@ const { inventoryContents, imageSetConfig } = storeToRefs(disconnectedStore)
   <ol>
     <li>
       Download the playbooks and container file
-      <VCodeBlock code="curl -LO https://github.com/mathianasj/ocp-mirror-automation/archive/refs/heads/master.zip
+      <VCodeBlock highlightjs lang="bash" code="curl -LO https://github.com/mathianasj/ocp-mirror-automation/archive/refs/heads/master.zip
 unzip master.zip
 cp -r ocp-mirror-automation-master/* ."/>
     </li>
