@@ -20,7 +20,7 @@ const { inventoryContents, imageSetConfig } = storeToRefs(disconnectedStore)
       Download the playbooks and container file
       <VCodeBlock code="curl -LO https://github.com/mathianasj/ocp-mirror-automation/archive/refs/heads/master.zip
 unzip master.zip
-cd ocp-mirror-automation-master"/>
+cp -r ocp-mirror-automation-master/* ."/>
     </li>
     <li>
       Create the ansible inventory file<br />
@@ -48,7 +48,7 @@ cd ocp-mirror-automation-master"/>
     <li>
       Build the container bundler<br />
       <VCodeBlock
-        code="podman build -t ocp-mirror -v $(pwd)/pullsecret.json:/root/.docker/config.json:Z ."
+        code="podman build -t ocp-mirror -v $(pwd)/pullsecret.json:/home/cmirror/.docker/config.json:Z ."
         highlightjs
         theme="neon-bunny"
         lang="bash"
