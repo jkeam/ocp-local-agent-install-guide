@@ -24,6 +24,7 @@ mirror:
       packages: 
        - name: node-observability-operator
        - name: rhods-operator
+         defaultChannel: fast
          channels:
          - name: fast
            minVersion: 2.19.0
