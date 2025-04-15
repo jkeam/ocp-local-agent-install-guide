@@ -23,11 +23,11 @@ mirror:
     - catalog: registry.redhat.io/redhat/redhat-operator-index:v4.18 
       packages: 
        - name: node-observability-operator
-    - name: rhods-operator
-      channels:
-      - name: fast
-        minVersion: 2.19.0
-        maxVersion: 2.19.0
+       - name: rhods-operator
+         channels:
+         - name: fast
+           minVersion: 2.19.0
+           maxVersion: 2.19.0
   additionalImages: 
    - name: registry.redhat.io/ubi8/ubi:latest
    - name: quay.io/modh/codeserver@sha256:1fd51b0e8a14995f1f7273a4b0b40f6e7e27e225ab179959747846e54079d61e
