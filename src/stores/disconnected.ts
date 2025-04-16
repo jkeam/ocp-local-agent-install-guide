@@ -5,7 +5,7 @@ import { useInputStore } from './inputs';
 
 function generateInventoryContents(mirrorHostName: string, mirrorHostUsername: string, quayRoot: string) {
   return`[mirrors]
-${mirrorHostName}	ansible_user=${mirrorHostUsername} quay_root=${quayRoot}
+${mirrorHostName}	ansible_user=${mirrorHostUsername} quay_root=${quayRoot} quay_hostname=${mirrorHostName}
 `
 }
 
