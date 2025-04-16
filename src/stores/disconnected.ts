@@ -3,9 +3,9 @@ import { defineStore, storeToRefs } from 'pinia'
 
 import { useInputStore } from './inputs';
 
-function generateInventoryContents(mirrorHostName: string, mirrorHostUsername: string) {
+function generateInventoryContents(mirrorHostName: string, mirrorHostUsername: string, quayRoot: string) {
   return`[mirrors]
-${mirrorHostName}	ansible_user=${mirrorHostUsername}
+${mirrorHostName}	ansible_user=${mirrorHostUsername} quay_root=${quayRoot}
 `
 }
 
@@ -83,12 +83,12 @@ mirror:
 }
 
 export const useDisconnectedStore = defineStore('disconnected', () => {
-  const { mirrorHostName, mirrorHostUsername } = storeToRefs(useInputStore());
-  const inventoryContents = ref(generateInventoryContents(mirrorHostName.value, mirrorHostUsername.value));
+  const { mirrorHostName, mirrorHostUsername, quayRoot } = storeToRefs(useInputStore());
+  const inventoryContents = ref(generateInventoryContents(mirrorHostName.value, mirrorHostUsername.value, quayRoot.value));
   const imageSetConfig = ref(generateImageSetConfig());
 
   watch([mirrorHostName, mirrorHostUsername], (newM, oldM) => {
-    inventoryContents.value = generateInventoryContents(mirrorHostName.value, mirrorHostUsername.value);
+    inventoryContents.value = generateInventoryContents(mirrorHostName.value, mirrorHostUsername.value, quayRoot.value);
   });
   
 

@@ -21,7 +21,8 @@ const {
   disconnected,
   mirrorHostName,
   mirrorHostUsername,
-  distType
+  distType,
+  quayRoot
 } = storeToRefs(inputStore)
 
 </script>
@@ -105,6 +106,12 @@ const {
         <BCol>
           <label for="pull-secret">Mirror Host Username for SSH/Ansible:</label>
           <input id="pull-secret" type="text" v-model="mirrorHostUsername" />
+        </BCol>
+      </BRow>
+      <BRow>
+        <BCol>
+          <label for="pull-secret">Quay storage path:</label>
+          <input id="pull-secret" type="text" v-model="quayRoot" />
         </BCol>
       </BRow>
     </BAccordionItem>

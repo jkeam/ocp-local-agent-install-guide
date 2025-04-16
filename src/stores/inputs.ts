@@ -44,6 +44,7 @@ export const useInputStore = defineStore('inputs', () => {
   const mirrorHostName = ref("");
   const mirrorHostUsername = ref("");
   const distType = ref("ocp");
+  const quayRoot = ref("/quay")
 
   const regex : RegExp = /(?:.*:\/\/)(?:.*\/)(.*)/gm;
 
@@ -266,6 +267,7 @@ export const useInputStore = defineStore('inputs', () => {
     disconnected,
     mirrorHostName,
     mirrorHostUsername,
-    distType
+    distType,
+    quayRoot
   }
 })
