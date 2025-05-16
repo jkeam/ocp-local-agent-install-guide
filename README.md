@@ -2,6 +2,10 @@
 
 This template should help get you started developing with Vue 3 in Vite.
 
+## Run Locally
+1. podman run --rm -d -p 8080:8080 quay.io/mathianasj/ocp-install-guide:main
+1. Navigate to http://localhost:8080
+
 ## Recommended IDE Setup
 
 [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
