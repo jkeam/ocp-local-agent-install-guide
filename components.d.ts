@@ -24,6 +24,7 @@ declare module 'vue' {
     InstallConfig: typeof import('./src/components/InstallConfig.vue')['default']
     InstallGuide: typeof import('./src/components/InstallGuide.vue')['default']
     Machines: typeof import('./src/components/Machines.vue')['default']
+    OperatorDetails: typeof import('./src/components/OperatorDetails.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TheWelcome: typeof import('./src/components/TheWelcome.vue')['default']

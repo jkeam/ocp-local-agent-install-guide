@@ -11,6 +11,19 @@ export interface Machine {
   defaultRoute: string,
 }
 
+export interface OperatorChannel {
+  csvName: string,
+  displayName: string,
+  additionalImages: string[],
+}
+
+export interface OperatorPackage {
+  defaultDisplayName: string,
+  packageName: string,
+  defaultChannel: string,
+  channels: Map<String, OperatorChannel>,
+}
+
 interface IDownloadUrl {
   oc: string,
   ocFilename?: string,
@@ -45,6 +58,8 @@ export const useInputStore = defineStore('inputs', () => {
   const mirrorHostUsername = ref("");
   const distType = ref("ocp");
   const quayRoot = ref("/quay")
+
+  const operators = ref<Map<String, OperatorPackage>>(new Map<String, OperatorPackage>())
 
   const regex : RegExp = /(?:.*:\/\/)(?:.*\/)(.*)/gm;
 
@@ -268,6 +283,7 @@ export const useInputStore = defineStore('inputs', () => {
     mirrorHostName,
     mirrorHostUsername,
     distType,
-    quayRoot
+    quayRoot,
+    operators
   }
 })

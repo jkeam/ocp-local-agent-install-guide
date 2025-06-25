@@ -7,12 +7,24 @@ import { createApp } from 'vue'
 import {createBootstrap} from 'bootstrap-vue-next'
 import { createPinia } from 'pinia'
 import { createVCodeBlock } from '@wdns/vue-code-block';
+import axios from 'axios';
 
 import App from './App.vue'
 import router from './router'
 
 const app = createApp(App)
 
+const configFetcher = axios.create().get("/config.json").then(resp => {
+    const api = axios.create({
+        baseURL: resp.data.apiEndpoint,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    });
+
+    app.provide('axios', api);
+
+});
 
 app.use(createPinia())
 app.use(router)

@@ -2,6 +2,7 @@
 import { storeToRefs } from 'pinia'
 import { useInputStore } from '../stores/inputs.js'
 import Machine from './Machines.vue'
+import OperatorDetails from './OperatorDetails.vue'
 
 const inputStore = useInputStore()
 const {
@@ -115,6 +116,7 @@ const {
         </BCol>
       </BRow>
     </BAccordionItem>
+    <OperatorDetails  v-if="disconnected" />
     <BAccordionItem title="DNS">
       <BRow>
         <BCol>
